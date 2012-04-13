@@ -25,6 +25,9 @@ using System.Linq;
 using System.Text;
 
 namespace MatlabAPI.Matlab {
+    /// <summary>
+    /// The enum of matlab type.
+    /// </summary>
     public enum mxArrayType {
         Array = 5,
         Char = 4,

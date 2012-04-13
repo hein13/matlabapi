@@ -143,7 +143,6 @@ namespace MatlabAPI.Matlab {
 
         /*
          * Remove a variable with with the specified name from the MAT-file pMF.
-         *
          * Return zero on success, non-zero on error.
          */
         [DllImport("libmat.dll", EntryPoint = "matDeleteVariable", SetLastError = true, CallingConvention = CallingConvention.Cdecl)]
@@ -160,8 +159,8 @@ namespace MatlabAPI.Matlab {
          * is NULL and num is set to zero.  If an error occurs,
          * return value is NULL and num is set to a negative number.
          */
-        [DllImport("libmat.dll", EntryPoint = "matDeleteVariable", SetLastError = true, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("libmat.dll", EntryPoint = "matGetDir", SetLastError = true, CallingConvention = CallingConvention.Cdecl)]
         [SuppressUnmanagedCodeSecurity]
-        public extern static string[] matGetDir(SafeMATFilePtr pMF, int[] num);
+        public extern static IntPtr matGetDir(SafeMATFilePtr pMF, ref int num);
     }
 }

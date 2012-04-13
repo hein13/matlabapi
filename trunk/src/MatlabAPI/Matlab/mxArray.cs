@@ -26,11 +26,19 @@ using System.Runtime.Serialization;
 using System.Collections.Generic;
 
 namespace MatlabAPI.Matlab {
-    public class mxArray : ICloneable, IDisposable {
+    public abstract class mxArray : IDisposable {
+        /// <summary>
+        /// Get the type of value.
+        /// </summary>
         public mxArrayType ArrayType { get; private set; }
+
         internal SafeArrayPtr NativeObject { get; private set; }
 
-        internal  mxArray(SafeArrayPtr pa) : this(pa, mxArrayType.Array) { }
+        #region internal structures.
+
+        internal mxArray(SafeArrayPtr pa) {
+            this.NativeObject = pa;
+        }
 
         internal mxArray(SafeArrayPtr pa, mxArrayType arrayType) : this(pa, arrayType, 2, new int[] { 1, 1 }) { }
 
@@ -39,6 +47,13 @@ namespace MatlabAPI.Matlab {
             this.ArrayType = arrayType;
         }
 
+        #endregion
+
+        /// <summary>
+        /// Create a mxArray with a mxArray pointer.
+        /// </summary>
+        /// <param name="pa"></param>
+        /// <returns></returns>
         internal static mxArray Create(SafeArrayPtr pa) {
             if (pa.IsInvalid)
                 throw new ArgumentException("pa");
@@ -63,30 +78,18 @@ namespace MatlabAPI.Matlab {
                     return new mxCellArray(pa);
                 case mxClassID.mxCHAR_CLASS:
                     return new mxCharArray(pa);
+                case mxClassID.mxSTRUCT_CLASS:
+                    return new mxStructArray(pa);
+                default:
+                    throw new NotSupportedException();
             }
-
-            return null;
         }
-
-        //public mxArray(bool value) {
-        //    this.NativeObject = matrix.mxCreateLogicalScalar(value);
-        //}
-
-        //public mxArray(string value) { 
-        //    this.NativeObject = matrix.mxCreateString(value);
-        //    CheckActive();
-        //}
-
-        //public mxArray(string[] values) {
-        //    this.NativeObject = matrix.mxCreateCellMatrix(1, values.Length);
-        //    CheckActive();
-        //    for (int i = 0, j = values.Length; i < j; i++) {
-        //        matrix.mxSetCell(this.NativeObject, i, new mxArray(values[i]).NativeObject);
-        //    }
-        //}
 
         #region size
 
+        /// <summary>
+        /// Get the length of first dimension. or the number of rows of value.
+        /// </summary>
         public int M { 
             get {
                 CheckActive();
@@ -94,6 +97,9 @@ namespace MatlabAPI.Matlab {
             } 
         }
 
+        /// <summary>
+        /// Get the length of second dimension. or the number of columns of value.
+        /// </summary>
         public int N { 
             get {
                 CheckActive();
@@ -101,6 +107,9 @@ namespace MatlabAPI.Matlab {
             } 
         }
 
+        /// <summary>
+        /// Get the size of element in array value.
+        /// </summary>
         public int ElementSize { 
             get {
                 CheckActive();
@@ -108,6 +117,9 @@ namespace MatlabAPI.Matlab {
             } 
         }
 
+        /// <summary>
+        /// Get the numbers of the elements in array value.
+        /// </summary>
         public int Length {
             get { 
                 CheckActive(); 
@@ -115,51 +127,24 @@ namespace MatlabAPI.Matlab {
             }
         }
 
-        public int[] Dimensions {
-            get {
-                CheckActive();
-                int length = matrix.mxGetNumberOfDimensions(this.NativeObject);
-                int[] dims = new int[length];
-                IntPtr ptr = matrix.mxGetDimensions(this.NativeObject);
-                Marshal.Copy(ptr, dims, 0, length);
-                return dims;
-            }
-        }
-
         #endregion
-
-
-        public string StringValue {
-            get {
-                CheckActive();
-                if (this.IsChar) {
-                    string v = matrix.mxGetChars(this.NativeObject);
-
-                    IntPtr d = matrix.mxGetData(this.NativeObject);
-                    char[] buf = new char[this.N];
-                    matrix.mxGetNChars(this.NativeObject, buf, buf.Length);
-
-                    Marshal.Copy(d, buf, 0, buf.Length);
-
-                    return new string(buf);
-                }
-
-                return string.Empty;
-            }
-        }
-
-        protected internal void CheckActive() {
-            if (this.NativeObject.IsInvalid) {
-                throw new OutOfMemoryException("The matlab instance is not active.");
-            }
-        }
 
         #region static methods
 
+        /// <summary>
+        /// Check if a double value is NaN.
+        /// </summary>
+        /// <param name="value">The checking value.</param>
+        /// <returns>return true if it's NaN, false if not.</returns>
         public static bool IsNaN(double value) {
             return NaN == value;
         }
 
+        /// <summary>
+        /// Check if a double value is Inf.
+        /// </summary>
+        /// <param name="value">The checking value.</param>
+        /// <returns>return true if it's Inf, false if not.</returns>
         public static bool IsInf(double value) {
             return Inf == value;
         }
@@ -168,48 +153,113 @@ namespace MatlabAPI.Matlab {
 
         #region constants
 
+        /// <summary>
+        /// NaN value.
+        /// </summary>
         public readonly static double NaN = matrix.mxGetNaN();
+
+        /// <summary>
+        /// Inf value.
+        /// </summary>
         public readonly static double Inf = matrix.mxGetInf();
+
+        /// <summary>
+        /// Eps value.
+        /// </summary>
         public readonly static double Eps = matrix.mxGetEps();
         
         #endregion
 
         #region Is
 
+        /// <summary>
+        /// Check if the value is empty.
+        /// </summary>
         public bool IsEmpty { get { return matrix.mxIsEmpty(this.NativeObject); } }
         
+        /// <summary>
+        /// Check if the type of value is string.
+        /// </summary>
         public bool IsChar { get { return matrix.mxIsChar(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is cell array.
+        /// </summary>
         public bool IsCell { get { return matrix.mxIsCell(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is complex.
+        /// </summary>
         public bool IsComplex { get { return matrix.mxIsComplex(this.NativeObject); } }
         
+        /// <summary>
+        /// Check if the type of value is struct.
+        /// </summary>
         public bool IsStruct { get { return matrix.mxIsStruct(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is a numeric.
+        /// </summary>
         public bool IsNumeric { get { return matrix.mxIsNumeric(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is class.
+        /// </summary>
         public bool IsObject { get { return matrix.mxIsObject(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is boolean
+        /// </summary>
         public bool IsBool { get { return matrix.mxIsLogical(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is int8.
+        /// </summary>
         public bool IsInt8 { get { return matrix.mxIsInt8(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is int16.
+        /// </summary>
         public bool IsInt16 { get { return matrix.mxIsInt16(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is int32.
+        /// </summary>
         public bool IsInt32 { get { return matrix.mxIsInt32(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is int64.
+        /// </summary>
         public bool IsInt64 { get { return matrix.mxIsInt64(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is uint8.
+        /// </summary>
         public bool IsUInt8 { get { return matrix.mxIsUint8(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is uint16.
+        /// </summary>
         public bool IsUInt16 { get { return matrix.mxIsUint16(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is uint32.
+        /// </summary>
         public bool IsUInt32 { get { return matrix.mxIsUint32(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is uint64.
+        /// </summary>
         public bool IsUInt64 { get { return matrix.mxIsUint64(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is float.
+        /// </summary>
         public bool IsSingle { get { return matrix.mxIsSingle(this.NativeObject); } }
 
+        /// <summary>
+        /// Check if the type of value is double.
+        /// </summary>
         public bool IsDouble { get { return matrix.mxIsDouble(this.NativeObject); } }
 
         #endregion
@@ -217,6 +267,14 @@ namespace MatlabAPI.Matlab {
         //public virtual Array ToArray() {
         //    throw new NotImplementedException();
         //}
+
+
+        protected internal void CheckActive() {
+            if (this.NativeObject.IsInvalid) {
+                throw new OutOfMemoryException("The matlab instance is not active.");
+            }
+        }
+
 
         #region IDisposable
 
@@ -246,11 +304,5 @@ namespace MatlabAPI.Matlab {
         }
 
         #endregion
-
-        public virtual object Clone() {
-            CheckActive();
-            object obj = new mxArray(matrix.mxDuplicateArray(this.NativeObject));
-            return obj;
-        }
     }
 }

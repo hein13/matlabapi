@@ -124,6 +124,8 @@ namespace MatlabAPI.Matlab {
         /// <summary>
         /// Identifies a function handle mxArray.
         /// </summary>
-        mxFUNCTION_CLASS
+        mxFUNCTION_CLASS,
+        mxOPAQUE_CLASS,
+        mxOBJECT_CLASS,
     };
 }
