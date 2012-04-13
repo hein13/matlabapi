@@ -27,11 +27,11 @@ using System.Runtime.ConstrainedExecution;
 namespace MatlabAPI.Matlab {
     [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
     internal sealed class SafeMATFilePtr : SafeHandleZeroOrMinusOneIsInvalid {
-        internal SafeMATFilePtr() : base(true) { base.SetHandle(IntPtr.Zero); }
+        public SafeMATFilePtr() : base(true) { base.SetHandle(IntPtr.Zero); }
 
-        internal SafeMATFilePtr(IntPtr pa) : base(true) { base.SetHandle(pa); }
+        public SafeMATFilePtr(IntPtr pa) : base(true) { base.SetHandle(pa); }
 
-        internal SafeMATFilePtr(IntPtr pa, bool ownsHandle) : base(ownsHandle) { base.SetHandle(pa); }
+        public SafeMATFilePtr(IntPtr pa, bool ownsHandle) : base(ownsHandle) { base.SetHandle(pa); }
 
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
         protected override bool ReleaseHandle() {

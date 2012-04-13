@@ -27,8 +27,8 @@ using System.Text;
 
 
 namespace MatlabAPI.Matlab {
-    internal class mxCharArray : mxArray {
-        public mxCharArray(SafeArrayPtr pa) : base(pa, mxArrayType.Char) { }
+    public sealed class mxCharArray : mxArray {
+        internal mxCharArray(SafeArrayPtr pa) : base(pa, mxArrayType.Char) { }
 
         public mxCharArray(string value) : 
             base(matrix.mxCreateString(value), mxArrayType.Char, 2, new int[]{1, value.Length}) {

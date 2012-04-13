@@ -25,7 +25,7 @@ using System.Linq;
 using System.Text;
 
 namespace MatlabAPI.Matlab {
-    internal enum mxNumericType {
+    public enum mxNumericType {
         /// <summary>
         /// Identifies a numeric mxArray whose data is stored as the 
         /// type specified in the MATLAB Primitive Types table.

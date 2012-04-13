@@ -26,20 +26,20 @@ using System.Runtime.Serialization;
 using System.Collections.Generic;
 
 namespace MatlabAPI.Matlab {
-    internal class mxArray : ICloneable, IDisposable {
+    public class mxArray : ICloneable, IDisposable {
         public mxArrayType ArrayType { get; private set; }
-        protected internal SafeArrayPtr NativeObject { get; private set; }
+        internal SafeArrayPtr NativeObject { get; private set; }
 
-        protected internal mxArray(SafeArrayPtr pa) : this(pa, mxArrayType.Array) { }
+        internal  mxArray(SafeArrayPtr pa) : this(pa, mxArrayType.Array) { }
 
-        protected internal mxArray(SafeArrayPtr pa, mxArrayType arrayType) : this(pa, arrayType, 2, new int[] { 1, 1 }) { }
+        internal mxArray(SafeArrayPtr pa, mxArrayType arrayType) : this(pa, arrayType, 2, new int[] { 1, 1 }) { }
 
-        protected internal mxArray(SafeArrayPtr pa, mxArrayType arrayType, int dimCount, int[] dimensions) {
+        internal mxArray(SafeArrayPtr pa, mxArrayType arrayType, int dimCount, int[] dimensions) {
             this.NativeObject = pa;
             this.ArrayType = arrayType;
         }
 
-        public static mxArray Create(SafeArrayPtr pa) {
+        internal static mxArray Create(SafeArrayPtr pa) {
             if (pa.IsInvalid)
                 throw new ArgumentException("pa");
 

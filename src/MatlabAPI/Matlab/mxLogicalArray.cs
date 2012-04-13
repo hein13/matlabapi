@@ -23,8 +23,8 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace MatlabAPI.Matlab {
-    internal class mxLogicalArray : mxArray {
-        public mxLogicalArray(SafeArrayPtr pa) : base(pa, mxArrayType.Logical) { }
+    public class mxLogicalArray : mxArray {
+        internal mxLogicalArray(SafeArrayPtr pa) : base(pa, mxArrayType.Logical) { }
 
         public mxLogicalArray() : this(false) { }
         public mxLogicalArray(int count) : this(false, count) { }
