@@ -47,6 +47,7 @@
     <Compile Include="Matlab\BitConverterExtesions.cs" />
     <Compile Include="Matlab\engine.cs" />
     <Compile Include="Matlab\mat.cs" />
+    <Compile Include="Matlab\MatFile.cs" />
     <Compile Include="Matlab\matrix.cs" />
     <Compile Include="Matlab\mxArray.cs" />
     <Compile Include="Matlab\mxArrayType.cs" />
