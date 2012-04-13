@@ -25,7 +25,7 @@ using System.Linq;
 using System.Text;
 
 namespace MatlabAPI.Matlab {
-    internal enum mxArrayType {
+    public enum mxArrayType {
         Array = 5,
         Char = 4,
         Numeric = 100,

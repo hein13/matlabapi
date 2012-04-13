@@ -23,14 +23,14 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace MatlabAPI.Matlab {
-    internal class mxNumericArray : mxArray {
+    public class mxNumericArray : mxArray {
         public mxNumericType NumericType { get; private set; }
 
         #region constructors
 
         #region with pointer
 
-        public mxNumericArray(SafeArrayPtr pa) : base(pa, mxArrayType.Numeric) {
+        internal mxNumericArray(SafeArrayPtr pa) : base(pa, mxArrayType.Numeric) {
             CheckActive();
             mxClassID clsId = matrix.mxGetClassID(this.NativeObject);
 

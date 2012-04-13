@@ -25,8 +25,8 @@ using System.Linq;
 using System.Text;
 
 namespace MatlabAPI.Matlab {
-    internal class mxStructArray : mxArray {
-        public mxStructArray(SafeArrayPtr pa) : base(pa, mxArrayType.Struct) { }
+    public sealed class mxStructArray : mxArray {
+        internal mxStructArray(SafeArrayPtr pa) : base(pa, mxArrayType.Struct) { }
 
         public int FieldCount {
             get { return matrix.mxGetNumberOfFields(this.NativeObject); }

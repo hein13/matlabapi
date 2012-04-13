@@ -25,8 +25,8 @@ using System.Linq;
 using System.Text;
 
 namespace MatlabAPI.Matlab {
-    internal class mxCellArray : mxArray {
-        public mxCellArray(SafeArrayPtr pa) : base(pa, mxArrayType.Cell) { }
+    public sealed class mxCellArray : mxArray {
+        internal mxCellArray(SafeArrayPtr pa) : base(pa, mxArrayType.Cell) { }
 
         public mxArray GetCell(int m, int n) {
             if (m < 0 || n < 0)
