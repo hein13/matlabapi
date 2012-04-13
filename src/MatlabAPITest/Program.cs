@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Diagnostics;
-using System.Threading;
+using MatlabAPI;
 using MatlabAPI.Matlab;
 
-namespace MatlabAPI {
+namespace MatlabAPITest {
     class Program {
-        static void Main(){
-
+        static void Main(string[] args) {
             using (MatEngine engine = new MatEngine(true)) {
                 engine.Start();
 
@@ -22,10 +19,6 @@ namespace MatlabAPI {
 
                 engine.Close();
             }
-
-            //Console.Read();
         }
-
-
     }
 }
