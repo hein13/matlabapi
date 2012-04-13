@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9B9B1248-AB6B-4A30-AE96-8ADA1DADAD6C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Mattress.Engine</RootNamespace>
+    <AssemblyName>Mattress.Engine</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MatEngine.cs" />
+    <Compile Include="Matlab\BitConverterExtesions.cs" />
+    <Compile Include="Matlab\engine.cs" />
+    <Compile Include="Matlab\mat.cs" />
+    <Compile Include="Matlab\matrix.cs" />
+    <Compile Include="Matlab\mxArray.cs" />
+    <Compile Include="Matlab\mxArrayType.cs" />
+    <Compile Include="Matlab\mxCellArray.cs" />
+    <Compile Include="Matlab\mxCharArray.cs" />
+    <Compile Include="Matlab\mxClassID.cs" />
+    <Compile Include="Matlab\mxComplexity.cs" />
+    <Compile Include="MatContext.cs" />
+    <Compile Include="Matlab\mxLogicalArray.cs" />
+    <Compile Include="Matlab\mxNumericArray.cs" />
+    <Compile Include="Matlab\mxNumericType.cs" />
+    <Compile Include="Matlab\mxStructArray.cs" />
+    <Compile Include="Matlab\SafeArrayPtr.cs" />
+    <Compile Include="Matlab\SafeEnginePtr.cs" />
+    <Compile Include="Matlab\SafeMATFilePtr.cs" />
+    <Compile Include="MatRequest.cs" />
+    <Compile Include="MatResponse.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="License.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
