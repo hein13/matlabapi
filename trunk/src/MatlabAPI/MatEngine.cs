@@ -61,15 +61,15 @@ namespace MatlabAPI {
             set { engine.engSetVisible(_engine, value); }
         }
 
-        internal bool PutVariable(string variableName, mxArray variable) {
+        public bool PutVariable(string variableName, mxArray variable) {
             return engine.engPutVariable(this._engine, variableName, variable.NativeObject) == 0;
         }
 
-        internal bool Execute(string cmd) {
+        public bool Execute(string cmd) {
             return engine.engEvalString(this._engine, cmd) == 0;
         }
 
-        internal mxArray GetVariable(string variableName) {
+        public mxArray GetVariable(string variableName) {
             return mxArray.Create(engine.engGetVariable(this._engine, variableName));
         }
 
