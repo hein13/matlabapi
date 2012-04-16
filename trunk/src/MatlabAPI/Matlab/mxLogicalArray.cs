@@ -24,6 +24,9 @@ using System.Runtime.InteropServices;
 
 namespace MatlabAPI.Matlab {
     public class mxLogicalArray : mxArray {
+
+        #region Constructors
+
         internal mxLogicalArray(SafeArrayPtr pa) : base(pa, mxArrayType.Logical) { }
 
         /// <summary>
@@ -134,7 +137,9 @@ namespace MatlabAPI.Matlab {
             Marshal.Copy(buf, 0, ptr, buf.Length);
         }
 
-        public bool[,] ToArray() {
+        #endregion
+
+        public override Array ToArray() {
             IntPtr ptr = matrix.mxGetLogicals(this.NativeObject);
             int row = this.M, col = this.N;
             int size = this.ElementSize;

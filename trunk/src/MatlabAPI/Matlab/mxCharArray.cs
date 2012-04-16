@@ -28,8 +28,14 @@ using System.Text;
 
 namespace MatlabAPI.Matlab {
     public sealed class mxCharArray : mxArray {
+        #region Constructors
+
         internal mxCharArray(SafeArrayPtr pa) : base(pa, mxArrayType.Char) { }
 
+        /// <summary>
+        /// Create a char array by a string.
+        /// </summary>
+        /// <param name="value">The string value.</param>
         public mxCharArray(string value){
             if (value == null)
                 value = string.Empty;
@@ -37,6 +43,8 @@ namespace MatlabAPI.Matlab {
             SafeArrayPtr pa = matrix.mxCreateString(value);
             CreateArray(pa, mxArrayType.Char);
         }
+
+        #endregion
 
         public override string ToString() {
             IntPtr ptr = matrix.mxGetData(this.NativeObject);
@@ -48,7 +56,7 @@ namespace MatlabAPI.Matlab {
             return Encoding.Unicode.GetString(buffer);
         }
 
-        public Array ToArray() {
+        public override Array ToArray() {
             int m = this.M, n = this.N;
             char[] tmpch = new char[n];
             string[] strarray = new string[m];

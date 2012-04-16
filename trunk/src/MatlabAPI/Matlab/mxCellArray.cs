@@ -26,6 +26,8 @@ using System.Text;
 
 namespace MatlabAPI.Matlab {
     public sealed class mxCellArray : mxArray {
+        #region Constructors
+
         internal mxCellArray(SafeArrayPtr pa) : base(pa, mxArrayType.Cell) { }
 
         /// <summary>
@@ -52,6 +54,10 @@ namespace MatlabAPI.Matlab {
             SafeArrayPtr pa = matrix.mxCreateCellArray(2, new int[] { 1, count });
             CreateArray(pa, mxArrayType.Cell);
         }
+
+        #endregion
+
+        #region GetCell
 
         /// <summary>
         /// Get a item of cell.
@@ -91,6 +97,10 @@ namespace MatlabAPI.Matlab {
 
             return mxArray.Create(ptr);
         }
+
+        #endregion
+
+        #region SetCell
 
         /// <summary>
         /// Set the item value of cell.
@@ -135,7 +145,9 @@ namespace MatlabAPI.Matlab {
             matrix.mxSetCell(this.NativeObject, index, array.NativeObject);
         }
 
-        public mxArray[,] ToArray() {
+        #endregion
+
+        public override Array ToArray() {
             int m = this.M, n = this.N;
             mxArray[,] array = new mxArray[m, n];
 

@@ -27,12 +27,35 @@ using System.Collections.Generic;
 
 namespace MatlabAPI.Matlab {
     public abstract class mxArray : IDisposable {
+        #region properties
+
         /// <summary>
         /// Get the type of value.
         /// </summary>
         public mxArrayType ArrayType { get; private set; }
 
         internal SafeArrayPtr NativeObject { get; private set; }
+
+        #endregion
+
+        #region constants
+
+        /// <summary>
+        /// NaN value.
+        /// </summary>
+        public readonly static double NaN = matrix.mxGetNaN();
+
+        /// <summary>
+        /// Inf value.
+        /// </summary>
+        public readonly static double Inf = matrix.mxGetInf();
+
+        /// <summary>
+        /// Eps value.
+        /// </summary>
+        public readonly static double Eps = matrix.mxGetEps();
+
+        #endregion
 
         #region internal structures.
 
@@ -54,6 +77,8 @@ namespace MatlabAPI.Matlab {
         }
 
         #endregion
+
+        #region Create by pointer.
 
         /// <summary>
         /// Create a mxArray with a mxArray pointer.
@@ -90,6 +115,8 @@ namespace MatlabAPI.Matlab {
                     throw new NotSupportedException();
             }
         }
+
+        #endregion
 
         #region size
 
@@ -157,25 +184,6 @@ namespace MatlabAPI.Matlab {
 
         #endregion
 
-        #region constants
-
-        /// <summary>
-        /// NaN value.
-        /// </summary>
-        public readonly static double NaN = matrix.mxGetNaN();
-
-        /// <summary>
-        /// Inf value.
-        /// </summary>
-        public readonly static double Inf = matrix.mxGetInf();
-
-        /// <summary>
-        /// Eps value.
-        /// </summary>
-        public readonly static double Eps = matrix.mxGetEps();
-        
-        #endregion
-
         #region IsXXX
 
         /// <summary>
@@ -215,12 +223,20 @@ namespace MatlabAPI.Matlab {
 
         #endregion
 
+        #region CheckActive
+
+        /// <summary>
+        /// Check if the pointer is null or invalid.
+        /// </summary>
         protected internal void CheckActive() {
             if (this.NativeObject.IsInvalid) {
                 throw new OutOfMemoryException("The matlab instance is not active.");
             }
         }
 
+        #endregion
+
+        public abstract Array ToArray();
 
         #region IDisposable
 
