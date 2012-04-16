@@ -31,7 +31,7 @@ namespace MatlabAPI.Matlab {
         internal mxCharArray(SafeArrayPtr pa) : base(pa, mxArrayType.Char) { }
 
         public mxCharArray(string value) : 
-            base(matrix.mxCreateString(value), mxArrayType.Char, 2, new int[]{1, value.Length}) {
+            base(matrix.mxCreateString(value), mxArrayType.Char) {
             CheckActive();
         }
 

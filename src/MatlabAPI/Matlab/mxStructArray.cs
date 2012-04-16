@@ -28,32 +28,17 @@ namespace MatlabAPI.Matlab {
     public sealed class mxStructArray : mxArray {
         internal mxStructArray(SafeArrayPtr pa) : base(pa, mxArrayType.Struct) { }
 
+        /// <summary>
+        /// Get the number of the fields in structs.
+        /// </summary>
         public int FieldCount {
             get { return matrix.mxGetNumberOfFields(this.NativeObject); }
         }
 
-        public mxArray GetField(int index, int fieldNum) {
-            if (index < 0 || index >= this.Length)
-                throw new ArgumentOutOfRangeException("The index must be range from 0 to the length of the array.");
-
-            int fieldCount = this.FieldCount;
-            if (fieldNum < 0 || fieldNum >= fieldCount)
-                throw new ArgumentOutOfRangeException("The fieldnum must be range from 0 to the number of the field.");
-
-            return mxArray.Create(matrix.mxGetFieldByNumber(this.NativeObject, index, fieldNum));
-        }
-
-        public mxArray GetField(int index, string fieldName) {
-            if (index < 0 || index >= this.Length)
-                throw new ArgumentOutOfRangeException("The index must be range from 0 to the length of the array.");
-
-            SafeArrayPtr ptr = matrix.mxGetField(this.NativeObject, index, fieldName);
-            if (ptr.IsInvalid)
-                throw new ArgumentException("The fieldName is not exists in struct.");
-
-            return mxArray.Create(ptr);
-        }
-
+        /// <summary>
+        /// Get all field names.
+        /// </summary>
+        /// <returns>The array of field names.</returns>
         public string[] GetFieldNames() {
             int fieldCount = this.FieldCount;
             string[] fieldNames = new string[fieldCount];
@@ -64,5 +49,100 @@ namespace MatlabAPI.Matlab {
 
             return fieldNames;
         }
+
+        #region GetField
+
+        /// <summary>
+        /// Get a field by field No.
+        /// </summary>
+        /// <param name="index">The index of the struct array.</param>
+        /// <param name="fieldNum">The No. of the field.</param>
+        /// <returns>The field array object.</returns>
+        public mxArray GetField(int index, int fieldNum) {
+            if (index < 0 || index >= this.Length)
+                throw new ArgumentOutOfRangeException("The index must be range from 0 to the length of the array.");
+
+            int fieldCount = this.FieldCount;
+            if (fieldNum < 0 || fieldNum >= fieldCount)
+                throw new ArgumentOutOfRangeException("The fieldnum must be range from 0 to the number of the field.");
+
+            SafeArrayPtr ptr = matrix.mxGetFieldByNumber(this.NativeObject, index, fieldNum);
+            if (ptr.IsInvalid)
+                throw new ArgumentException("The fieldName is not exists in struct.");
+
+            return mxArray.Create(ptr);
+        }
+
+        /// <summary>
+        /// Get a field by field name.
+        /// </summary>
+        /// <param name="index">The index of the struct array.</param>
+        /// <param name="fieldName">The name of field.</param>
+        /// <returns>The field array object.</returns>
+        public mxArray GetField(int index, string fieldName) {
+            if (index < 0 || index >= this.Length)
+                throw new ArgumentOutOfRangeException("index", "The index must be range from 0 to the length of the array.");
+
+            if (string.IsNullOrEmpty(fieldName))
+                throw new ArgumentNullException("fieldName", "The fieldName must be not null.");
+
+            SafeArrayPtr ptr = matrix.mxGetField(this.NativeObject, index, fieldName);
+            if (ptr.IsInvalid)
+                throw new ArgumentException("The fieldName is not exists in struct.");
+
+            return mxArray.Create(ptr);
+        }
+
+        #endregion
+
+        #region SetField
+
+        /// <summary>
+        /// Set the field value by field No.
+        /// </summary>
+        /// <param name="index">The index of the struct array.</param>
+        /// <param name="fieldNum">The No. of the field.</param>
+        /// <param name="array">The field value.</param>
+        public void SetField(int index, int fieldNum, mxArray array) {
+            if (index < 0 || index >= this.Length)
+                throw new ArgumentOutOfRangeException("index", "The index must be range from 0 to the length of the array.");
+
+            if (array == null)
+                throw new ArgumentNullException("array", "The mxArray parameter must be not null.");
+
+            if (array.NativeObject.IsInvalid)
+                throw new ArgumentException("The parameter array is invalid.", "array");
+
+            int fieldCount = this.FieldCount;
+            if (fieldNum < 0 || fieldNum >= fieldCount)
+                throw new ArgumentOutOfRangeException("fieldNum", "The fieldnum must be range from 0 to the number of the field.");
+
+            matrix.mxSetFieldByNumber(this.NativeObject, index, fieldNum, array.NativeObject);
+        }
+
+        /// <summary>
+        /// Set the field value by field name.
+        /// </summary>
+        /// <param name="index">The index of the struct array.</param>
+        /// <param name="fieldName">The name of field.</param>
+        /// <param name="array">The field value.</param>
+        public void SetField(int index, string fieldName, mxArray array) {
+            if (index < 0 || index >= this.Length)
+                throw new ArgumentOutOfRangeException("index", "The index must be range from 0 to the length of the array.");
+            
+            if (string.IsNullOrEmpty(fieldName))
+                throw new ArgumentNullException("fieldName", "The fieldName must be not null.");
+
+            if (array == null)
+                throw new ArgumentNullException("array", "The mxArray parameter must be not null.");
+
+            if (array.NativeObject.IsInvalid)
+                throw new ArgumentException("The parameter array is invalid.", "array");
+            
+            matrix.mxSetField(this.NativeObject, index, fieldName, array.NativeObject);
+        }
+
+        #endregion
+
     }
 }
