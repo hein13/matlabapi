@@ -249,6 +249,65 @@ namespace MatlabAPI.Matlab {
 
         #endregion
 
+        #region isXXXX
+
+        /// <summary>
+        /// Check if the type of value is complex.
+        /// </summary>
+        public bool IsComplex { get { return matrix.mxIsComplex(this.NativeObject); } }
+        
+        /// <summary>
+        /// Check if the type of value is int8.
+        /// </summary>
+        public bool IsInt8 { get { return matrix.mxIsInt8(this.NativeObject); } }
+
+        /// <summary>
+        /// Check if the type of value is int16.
+        /// </summary>
+        public bool IsInt16 { get { return matrix.mxIsInt16(this.NativeObject); } }
+
+        /// <summary>
+        /// Check if the type of value is int32.
+        /// </summary>
+        public bool IsInt32 { get { return matrix.mxIsInt32(this.NativeObject); } }
+
+        /// <summary>
+        /// Check if the type of value is int64.
+        /// </summary>
+        public bool IsInt64 { get { return matrix.mxIsInt64(this.NativeObject); } }
+
+        /// <summary>
+        /// Check if the type of value is uint8.
+        /// </summary>
+        public bool IsUInt8 { get { return matrix.mxIsUint8(this.NativeObject); } }
+
+        /// <summary>
+        /// Check if the type of value is uint16.
+        /// </summary>
+        public bool IsUInt16 { get { return matrix.mxIsUint16(this.NativeObject); } }
+
+        /// <summary>
+        /// Check if the type of value is uint32.
+        /// </summary>
+        public bool IsUInt32 { get { return matrix.mxIsUint32(this.NativeObject); } }
+
+        /// <summary>
+        /// Check if the type of value is uint64.
+        /// </summary>
+        public bool IsUInt64 { get { return matrix.mxIsUint64(this.NativeObject); } }
+
+        /// <summary>
+        /// Check if the type of value is float.
+        /// </summary>
+        public bool IsSingle { get { return matrix.mxIsSingle(this.NativeObject); } }
+
+        /// <summary>
+        /// Check if the type of value is double.
+        /// </summary>
+        public bool IsDouble { get { return matrix.mxIsDouble(this.NativeObject); } }
+
+        #endregion
+
         public double ScalarValue { get { return matrix.mxGetScalar(this.NativeObject); } }
 
         public Array ToArray() {

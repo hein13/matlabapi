@@ -26,14 +26,41 @@ namespace MatlabAPI.Matlab {
     public class mxLogicalArray : mxArray {
         internal mxLogicalArray(SafeArrayPtr pa) : base(pa, mxArrayType.Logical) { }
 
+        /// <summary>
+        /// Create a logical array of one item, the value is false.
+        /// </summary>
         public mxLogicalArray() : this(false) { }
+
+        /// <summary>
+        /// Create a logical array of one dimsension with false value.
+        /// </summary>
+        /// <param name="count">The length of logical array.</param>
         public mxLogicalArray(int count) : this(false, count) { }
 
+        /// <summary>
+        /// Create a logical array of one dimsension with value.
+        /// </summary>
+        /// <param name="value">The value of logical array.</param>
         public mxLogicalArray(bool value)
             : base(matrix.mxCreateLogicalScalar(value), mxArrayType.Logical) {
                 CheckActive();
         }
 
+        /// <summary>
+        /// Create a logical array of two dimsensions with false value.
+        /// </summary>
+        /// <param name="m">The rows of logical array.</param>
+        /// <param name="n">The columns of logical array.</param>
+        public mxLogicalArray(int m, int n)
+            : base(matrix.mxCreateLogicalArray(2, new int[] { m, n }), mxArrayType.Logical) {
+                CheckActive();
+        }
+
+        /// <summary>
+        /// Create a logical array of one dimension with given value.
+        /// </summary>
+        /// <param name="value">The given value.</param>
+        /// <param name="count">The length of logical array.</param>
         public mxLogicalArray(bool value, int count)
             : base(matrix.mxCreateLogicalArray(2,new int[]{1, count}), mxArrayType.Logical) {
             CheckActive();
@@ -51,6 +78,12 @@ namespace MatlabAPI.Matlab {
             Marshal.Copy(buf, 0, ptr, count);
         }
 
+        /// <summary>
+        /// Create a logical array of two dimensions with given value.
+        /// </summary>
+        /// <param name="value">The given value.</param>
+        /// <param name="rows">The rows of logical array.</param>
+        /// <param name="cols">The columns of logical array.</param>
         public mxLogicalArray(bool value, int rows, int cols)
             : base(matrix.mxCreateLogicalArray(2, new int[] { rows, cols }), mxArrayType.Logical) {
             CheckActive();
@@ -68,6 +101,10 @@ namespace MatlabAPI.Matlab {
             Marshal.Copy(buf, 0, ptr, buf.Length);
         }
 
+        /// <summary>
+        /// Create a logical array of one dimsension with bool array.
+        /// </summary>
+        /// <param name="values">The bool array.</param>
         public mxLogicalArray(bool[] values)
             : base(matrix.mxCreateLogicalArray(2, new int[] { 1, values.Length }), mxArrayType.Logical) {
                 CheckActive();
@@ -76,6 +113,10 @@ namespace MatlabAPI.Matlab {
                 Marshal.Copy(buf, 0, ptr, buf.Length);
         }
 
+        /// <summary>
+        /// Create a logical array of two dimsensions with bool array.
+        /// </summary>
+        /// <param name="values">The given bool array.</param>
         public mxLogicalArray(bool[,] values)
             : base(matrix.mxCreateLogicalArray(2, new int[] { values.GetLength(0), values.GetLength(1) }), mxArrayType.Logical) {
             CheckActive();

@@ -40,9 +40,7 @@ namespace MatlabAPI.Matlab {
             this.NativeObject = pa;
         }
 
-        internal mxArray(SafeArrayPtr pa, mxArrayType arrayType) : this(pa, arrayType, 2, new int[] { 1, 1 }) { }
-
-        internal mxArray(SafeArrayPtr pa, mxArrayType arrayType, int dimCount, int[] dimensions) {
+        internal mxArray(SafeArrayPtr pa, mxArrayType arrayType) {
             this.NativeObject = pa;
             this.ArrayType = arrayType;
         }
@@ -170,7 +168,7 @@ namespace MatlabAPI.Matlab {
         
         #endregion
 
-        #region Is
+        #region IsXXX
 
         /// <summary>
         /// Check if the value is empty.
@@ -187,11 +185,6 @@ namespace MatlabAPI.Matlab {
         /// </summary>
         public bool IsCell { get { return matrix.mxIsCell(this.NativeObject); } }
 
-        /// <summary>
-        /// Check if the type of value is complex.
-        /// </summary>
-        public bool IsComplex { get { return matrix.mxIsComplex(this.NativeObject); } }
-        
         /// <summary>
         /// Check if the type of value is struct.
         /// </summary>
@@ -212,62 +205,7 @@ namespace MatlabAPI.Matlab {
         /// </summary>
         public bool IsBool { get { return matrix.mxIsLogical(this.NativeObject); } }
 
-        /// <summary>
-        /// Check if the type of value is int8.
-        /// </summary>
-        public bool IsInt8 { get { return matrix.mxIsInt8(this.NativeObject); } }
-
-        /// <summary>
-        /// Check if the type of value is int16.
-        /// </summary>
-        public bool IsInt16 { get { return matrix.mxIsInt16(this.NativeObject); } }
-
-        /// <summary>
-        /// Check if the type of value is int32.
-        /// </summary>
-        public bool IsInt32 { get { return matrix.mxIsInt32(this.NativeObject); } }
-
-        /// <summary>
-        /// Check if the type of value is int64.
-        /// </summary>
-        public bool IsInt64 { get { return matrix.mxIsInt64(this.NativeObject); } }
-
-        /// <summary>
-        /// Check if the type of value is uint8.
-        /// </summary>
-        public bool IsUInt8 { get { return matrix.mxIsUint8(this.NativeObject); } }
-
-        /// <summary>
-        /// Check if the type of value is uint16.
-        /// </summary>
-        public bool IsUInt16 { get { return matrix.mxIsUint16(this.NativeObject); } }
-
-        /// <summary>
-        /// Check if the type of value is uint32.
-        /// </summary>
-        public bool IsUInt32 { get { return matrix.mxIsUint32(this.NativeObject); } }
-
-        /// <summary>
-        /// Check if the type of value is uint64.
-        /// </summary>
-        public bool IsUInt64 { get { return matrix.mxIsUint64(this.NativeObject); } }
-
-        /// <summary>
-        /// Check if the type of value is float.
-        /// </summary>
-        public bool IsSingle { get { return matrix.mxIsSingle(this.NativeObject); } }
-
-        /// <summary>
-        /// Check if the type of value is double.
-        /// </summary>
-        public bool IsDouble { get { return matrix.mxIsDouble(this.NativeObject); } }
-
         #endregion
-
-        //public virtual Array ToArray() {
-        //    throw new NotImplementedException();
-        //}
-
 
         protected internal void CheckActive() {
             if (this.NativeObject.IsInvalid) {

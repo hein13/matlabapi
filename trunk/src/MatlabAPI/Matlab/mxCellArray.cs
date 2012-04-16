@@ -26,8 +26,35 @@ using System.Text;
 
 namespace MatlabAPI.Matlab {
     public sealed class mxCellArray : mxArray {
-        internal mxCellArray(SafeArrayPtr pa) : base(pa, mxArrayType.Cell) { }
+        internal mxCellArray(SafeArrayPtr pa) : base(pa, mxArrayType.Cell) {
+            CheckActive();
+        }
 
+        /// <summary>
+        /// Create a cell array with two dimsensions.
+        /// </summary>
+        /// <param name="m">The rows of cell array.</param>
+        /// <param name="n">The columns of cell array.</param>
+        internal mxCellArray(int m, int n)
+            : base(matrix.mxCreateCellArray(2, new int[] { m, n }), mxArrayType.Cell) {
+                CheckActive();
+        }
+
+        /// <summary>
+        /// Create a cell array with one dimsension.
+        /// </summary>
+        /// <param name="count">The length of cell array.</param>
+        internal mxCellArray(int count)
+            : base(matrix.mxCreateCellArray(2, new int[] { 1, count }), mxArrayType.Cell) {
+            CheckActive();
+        }
+
+        /// <summary>
+        /// Get a item of cell.
+        /// </summary>
+        /// <param name="m">The index of row.</param>
+        /// <param name="n">The idnex of column.</param>
+        /// <returns>The item of cell.</returns>
         public mxArray GetCell(int m, int n) {
             if (m < 0 || n < 0)
                 throw new ArgumentOutOfRangeException("The m and n must be larger than zero.");
@@ -35,9 +62,73 @@ namespace MatlabAPI.Matlab {
             if (m >= this.M || n >= this.N)
                 throw new ArgumentOutOfRangeException("The m and n must be less than the size of the cell array.");
 
-            SafeArrayPtr pt = matrix.mxGetCell(this.NativeObject, n * this.M + m);
-            
-            return mxArray.Create(pt);
+            SafeArrayPtr ptr = matrix.mxGetCell(this.NativeObject, n * this.M + m);
+            if (ptr.IsInvalid)
+                throw new ArgumentException("The item of cell may be not exists.");
+
+            return mxArray.Create(ptr);
+        }
+
+        /// <summary>
+        /// Get a item of cell.
+        /// </summary>
+        /// <param name="index">The index of item.</param>
+        /// <returns>The array value of item.</returns>
+        public mxArray GetCell(int index) {
+            if (index < 0)
+                throw new ArgumentOutOfRangeException("index", "The index must be larger than zero.");
+
+            if (index >= this.Length)
+                throw new ArgumentOutOfRangeException("index", "The index must be less than the length of the cell array.");
+
+            SafeArrayPtr ptr = matrix.mxGetCell(this.NativeObject, index);
+            if (ptr.IsInvalid)
+                throw new ArgumentException("The item of cell may be not exists.");
+
+            return mxArray.Create(ptr);
+        }
+
+        /// <summary>
+        /// Set the item value of cell.
+        /// </summary>
+        /// <param name="m">The index of row.</param>
+        /// <param name="n">The index of column.</param>
+        /// <param name="array">The item of cell.</param>
+        public void SetCell(int m, int n, mxArray array) {
+            if (m < 0 || n < 0)
+                throw new ArgumentOutOfRangeException("The m and n must be larger than zero.");
+
+            if (m >= this.M || n >= this.N)
+                throw new ArgumentOutOfRangeException("The m and n must be less than the size of the cell array.");
+
+            if (array == null)
+                throw new ArgumentNullException("array", "The mxArray parameter must be not null.");
+
+            if (array.NativeObject.IsInvalid)
+                throw new ArgumentException("The parameter array is invalid.", "array");
+
+            matrix.mxSetCell(this.NativeObject, n * this.M + m, array.NativeObject);
+        }
+
+        /// <summary>
+        /// Set the item value of the cell.
+        /// </summary>
+        /// <param name="index">The index of cell items.</param>
+        /// <param name="array">The item value.</param>
+        public void SetCell(int index, mxArray array) {
+            if (index < 0)
+                throw new ArgumentOutOfRangeException("index", "The index must be larger than zero.");
+
+            if (index >= this.Length)
+                throw new ArgumentOutOfRangeException("index", "The index must be less than the length of the cell array.");
+
+            if (array == null)
+                throw new ArgumentNullException("array", "The mxArray parameter must be not null.");
+
+            if (array.NativeObject.IsInvalid)
+                throw new ArgumentException("The parameter array is invalid.", "array");
+
+            matrix.mxSetCell(this.NativeObject, index, array.NativeObject);
         }
 
         public mxArray[,] ToArray() {
