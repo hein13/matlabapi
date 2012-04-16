@@ -26,7 +26,39 @@ using System.Text;
 
 namespace MatlabAPI.Matlab {
     public sealed class mxStructArray : mxArray {
-        internal mxStructArray(SafeArrayPtr pa) : base(pa, mxArrayType.Struct) { }
+        internal mxStructArray(SafeArrayPtr pa) : base(pa, mxArrayType.Struct) {
+            CheckActive();
+        }
+
+        public mxStructArray(string[] fieldNames) {
+            if (fieldNames == null || fieldNames.Length == 0)
+                throw new ArgumentNullException("fieldNames", "The fieldNames must be not null or emtpy.");
+
+            SafeArrayPtr pa = matrix.mxCreateStructMatrix(1, 1, fieldNames.Length, fieldNames);
+            CreateArray(pa, mxArrayType.Struct);
+        }
+
+        public mxStructArray(int count, string[] fieldNames) {
+            if (count < 1)
+                throw new ArgumentOutOfRangeException("count", "The count must be larger and equal than zero.");
+            
+            if (fieldNames == null || fieldNames.Length == 0)
+                throw new ArgumentNullException("fieldNames", "The fieldNames must be not null or emtpy.");
+            
+            SafeArrayPtr pa = matrix.mxCreateStructArray(2, new int[]{1,count}, fieldNames.Length, fieldNames);
+            CreateArray(pa, mxArrayType.Struct);
+        }
+
+        public mxStructArray(int m, int n, string[] fieldNames) {
+            if (m < 1 || n < 1)
+                throw new ArgumentOutOfRangeException("The m and n must be larger than zero.");
+
+            if (fieldNames == null || fieldNames.Length == 0)
+                throw new ArgumentNullException("fieldNames", "The fieldNames must be not null or emtpy.");
+
+            SafeArrayPtr pa = matrix.mxCreateStructArray(2, new int[]{m, n}, fieldNames.Length, fieldNames);
+            CreateArray(pa, mxArrayType.Struct);
+        }
 
         /// <summary>
         /// Get the number of the fields in structs.
