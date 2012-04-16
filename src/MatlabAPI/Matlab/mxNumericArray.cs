@@ -20,6 +20,7 @@
  */
 
 using System;
+using System.Text;
 using System.Runtime.InteropServices;
 
 namespace MatlabAPI.Matlab {
@@ -314,7 +315,13 @@ namespace MatlabAPI.Matlab {
 
         public double ScalarValue { get { return matrix.mxGetScalar(this.NativeObject); } }
 
-        public Array ToArray() {
+        public override string ToString() {
+            //Array array = this.ToArray();
+            //StringBuilder sb = new StringBuilder();
+            return ScalarValue.ToString();
+        }
+
+        public override Array ToArray() {
             IntPtr ptr = matrix.mxGetData(base.NativeObject);
             int m = this.M, n = this.N, size = this.ElementSize;
             byte[] buffer = new byte[m * n * size];
