@@ -207,25 +207,28 @@ namespace MatlabAPI.Matlab {
         protected internal mxNumericArray(byte[] realBytes, byte[] imgBytes, mxNumericType numType) :
             this(realBytes, imgBytes, realBytes.Length, numType) { }
 
-        protected internal mxNumericArray(byte[] values, int size, mxNumericType numType)
-            : base(matrix.mxCreateNumericArray(2, new int[] { 1, values.Length / size }, numType, mxComplexity.mxREAL), mxArrayType.Numeric) {
-            CheckActive();
+        protected internal mxNumericArray(byte[] values, int size, mxNumericType numType) {
+            SafeArrayPtr pa = matrix.mxCreateNumericArray(2, new int[] { 1, values.Length / size }, numType, mxComplexity.mxREAL);
+            CreateArray(pa, mxArrayType.Numeric);
+
             this.NumericType = numType;
             IntPtr ptr = matrix.mxGetData(this.NativeObject);
             Marshal.Copy(values, 0, ptr, values.Length);
         }
 
-        protected internal mxNumericArray(byte[] values, int m, int n, mxNumericType numType)
-            : base(matrix.mxCreateNumericArray(2, new int[] { m, n }, numType, mxComplexity.mxREAL), mxArrayType.Numeric) {
-            CheckActive();
+        protected internal mxNumericArray(byte[] values, int m, int n, mxNumericType numType) {
+            SafeArrayPtr pa = matrix.mxCreateNumericArray(2, new int[] { m, n }, numType, mxComplexity.mxREAL);
+            CreateArray(pa, mxArrayType.Numeric);
+
             this.NumericType = numType;
             IntPtr ptr = matrix.mxGetData(this.NativeObject);
             Marshal.Copy(values, 0, ptr, values.Length);
         }
 
-        protected internal mxNumericArray(byte[] realBytes, byte[] imgBytes, int size, mxNumericType numType)
-            : base(matrix.mxCreateNumericArray(2, new int[] { 1, realBytes.Length / size }, numType, mxComplexity.mxCOMPLEX), mxArrayType.Numeric) {
-            CheckActive();
+        protected internal mxNumericArray(byte[] realBytes, byte[] imgBytes, int size, mxNumericType numType) {
+            SafeArrayPtr pa = matrix.mxCreateNumericArray(2, new int[] { 1, realBytes.Length / size }, numType, mxComplexity.mxCOMPLEX);
+            CreateArray(pa, mxArrayType.Numeric);
+
             this.NumericType = numType;
             IntPtr realPtr = matrix.mxGetData(this.NativeObject);
             IntPtr imgPtr = matrix.mxGetImagData(this.NativeObject);
@@ -234,9 +237,10 @@ namespace MatlabAPI.Matlab {
             Marshal.Copy(imgBytes, 0, imgPtr, imgBytes.Length);
         }
 
-        protected internal mxNumericArray(byte[] realBytes, byte[] imgBytes, int m, int n, mxNumericType numType)
-            : base(matrix.mxCreateNumericArray(2, new int[] { m, n}, numType, mxComplexity.mxCOMPLEX), mxArrayType.Numeric) {
-            CheckActive();
+        protected internal mxNumericArray(byte[] realBytes, byte[] imgBytes, int m, int n, mxNumericType numType) {
+            SafeArrayPtr pa = matrix.mxCreateNumericArray(2, new int[] { m, n}, numType, mxComplexity.mxCOMPLEX);
+            CreateArray(pa, mxArrayType.Numeric);
+
             this.NumericType = numType;
             IntPtr realPtr = matrix.mxGetData(this.NativeObject);
             IntPtr imgPtr = matrix.mxGetImagData(this.NativeObject);

@@ -30,9 +30,12 @@ namespace MatlabAPI.Matlab {
     public sealed class mxCharArray : mxArray {
         internal mxCharArray(SafeArrayPtr pa) : base(pa, mxArrayType.Char) { }
 
-        public mxCharArray(string value) : 
-            base(matrix.mxCreateString(value), mxArrayType.Char) {
-            CheckActive();
+        public mxCharArray(string value){
+            if (value == null)
+                value = string.Empty;
+
+            SafeArrayPtr pa = matrix.mxCreateString(value);
+            CreateArray(pa, mxArrayType.Char);
         }
 
         public override string ToString() {

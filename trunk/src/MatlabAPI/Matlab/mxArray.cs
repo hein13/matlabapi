@@ -36,13 +36,21 @@ namespace MatlabAPI.Matlab {
 
         #region internal structures.
 
+        internal mxArray() { this.NativeObject = new SafeArrayPtr(IntPtr.Zero); }
+
         internal mxArray(SafeArrayPtr pa) {
             this.NativeObject = pa;
+            CheckActive();
         }
 
         internal mxArray(SafeArrayPtr pa, mxArrayType arrayType) {
+            CreateArray(pa, arrayType);
+        }
+
+        internal void CreateArray(SafeArrayPtr pa, mxArrayType arrayType) {
             this.NativeObject = pa;
             this.ArrayType = arrayType;
+            CheckActive();
         }
 
         #endregion

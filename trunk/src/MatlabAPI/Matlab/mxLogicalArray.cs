@@ -42,18 +42,19 @@ namespace MatlabAPI.Matlab {
         /// </summary>
         /// <param name="value">The value of logical array.</param>
         public mxLogicalArray(bool value)
-            : base(matrix.mxCreateLogicalScalar(value), mxArrayType.Logical) {
-                CheckActive();
-        }
+            : base(matrix.mxCreateLogicalScalar(value), mxArrayType.Logical) { }
 
         /// <summary>
         /// Create a logical array of two dimsensions with false value.
         /// </summary>
         /// <param name="m">The rows of logical array.</param>
         /// <param name="n">The columns of logical array.</param>
-        public mxLogicalArray(int m, int n)
-            : base(matrix.mxCreateLogicalArray(2, new int[] { m, n }), mxArrayType.Logical) {
-                CheckActive();
+        public mxLogicalArray(int m, int n) {
+            if (m < 1 || n < 1)
+                throw new ArgumentOutOfRangeException("The length must be larger than zero.");
+
+            SafeArrayPtr pa = matrix.mxCreateLogicalArray(2, new int[] { m, n });
+            CreateArray(pa, mxArrayType.Logical);
         }
 
         /// <summary>
@@ -61,12 +62,12 @@ namespace MatlabAPI.Matlab {
         /// </summary>
         /// <param name="value">The given value.</param>
         /// <param name="count">The length of logical array.</param>
-        public mxLogicalArray(bool value, int count)
-            : base(matrix.mxCreateLogicalArray(2,new int[]{1, count}), mxArrayType.Logical) {
-            CheckActive();
-
+        public mxLogicalArray(bool value, int count) {
             if (count < 1)
                 throw new ArgumentOutOfRangeException("count", "The count must be larger than zero.");
+
+            SafeArrayPtr pa = matrix.mxCreateLogicalArray(2,new int[]{1, count});
+            CreateArray(pa, mxArrayType.Logical);
 
             byte[] buf = new byte[count * BitConverterExtesions.bool_size];
             byte v = value ? (byte)1 : (byte)0;
@@ -84,12 +85,12 @@ namespace MatlabAPI.Matlab {
         /// <param name="value">The given value.</param>
         /// <param name="rows">The rows of logical array.</param>
         /// <param name="cols">The columns of logical array.</param>
-        public mxLogicalArray(bool value, int rows, int cols)
-            : base(matrix.mxCreateLogicalArray(2, new int[] { rows, cols }), mxArrayType.Logical) {
-            CheckActive();
-
+        public mxLogicalArray(bool value, int rows, int cols) {
             if (rows < 1 || cols < 1)
-                throw new ArgumentOutOfRangeException("rows", "The rows and cols must be larger than zero.");
+                throw new ArgumentOutOfRangeException("The rows and cols must be larger than zero.");
+
+            SafeArrayPtr pa = matrix.mxCreateLogicalArray(2, new int[] { rows, cols });
+            CreateArray(pa, mxArrayType.Logical);
 
             byte[] buf = new byte[rows * cols * BitConverterExtesions.bool_size];
             byte v = value ? (byte)1 : (byte)0;
@@ -105,21 +106,29 @@ namespace MatlabAPI.Matlab {
         /// Create a logical array of one dimsension with bool array.
         /// </summary>
         /// <param name="values">The bool array.</param>
-        public mxLogicalArray(bool[] values)
-            : base(matrix.mxCreateLogicalArray(2, new int[] { 1, values.Length }), mxArrayType.Logical) {
-                CheckActive();
-                byte[] buf = BitConverterExtesions.GetBytes(values);
-                IntPtr ptr = matrix.mxGetData(this.NativeObject);
-                Marshal.Copy(buf, 0, ptr, buf.Length);
+        public mxLogicalArray(bool[] values)  {
+            if (values == null || values.Length == 0)
+                throw new ArgumentNullException("values", "The values must be not null or empty.");
+            
+            SafeArrayPtr pa = matrix.mxCreateLogicalArray(2, new int[] { 1, values.Length });
+            CreateArray(pa, mxArrayType.Logical);
+            
+            byte[] buf = BitConverterExtesions.GetBytes(values);
+            IntPtr ptr = matrix.mxGetData(this.NativeObject);
+            Marshal.Copy(buf, 0, ptr, buf.Length);
         }
 
         /// <summary>
         /// Create a logical array of two dimsensions with bool array.
         /// </summary>
         /// <param name="values">The given bool array.</param>
-        public mxLogicalArray(bool[,] values)
-            : base(matrix.mxCreateLogicalArray(2, new int[] { values.GetLength(0), values.GetLength(1) }), mxArrayType.Logical) {
-            CheckActive();
+        public mxLogicalArray(bool[,] values) {
+            if (values == null || values.Length == 0)
+                throw new ArgumentNullException("values", "The values must be not null or empty.");
+
+            SafeArrayPtr pa = matrix.mxCreateLogicalArray(2, new int[] { values.GetLength(0), values.GetLength(1) });
+            CreateArray(pa, mxArrayType.Logical);
+
             byte[] buf = BitConverterExtesions.GetBytes(values);
             IntPtr ptr = matrix.mxGetData(this.NativeObject);
             Marshal.Copy(buf, 0, ptr, buf.Length);

@@ -26,27 +26,31 @@ using System.Text;
 
 namespace MatlabAPI.Matlab {
     public sealed class mxCellArray : mxArray {
-        internal mxCellArray(SafeArrayPtr pa) : base(pa, mxArrayType.Cell) {
-            CheckActive();
-        }
+        internal mxCellArray(SafeArrayPtr pa) : base(pa, mxArrayType.Cell) { }
 
         /// <summary>
         /// Create a cell array with two dimsensions.
         /// </summary>
         /// <param name="m">The rows of cell array.</param>
         /// <param name="n">The columns of cell array.</param>
-        internal mxCellArray(int m, int n)
-            : base(matrix.mxCreateCellArray(2, new int[] { m, n }), mxArrayType.Cell) {
-                CheckActive();
+        public mxCellArray(int m, int n) {
+            if (m < 1 || n < 1)
+                throw new ArgumentOutOfRangeException("The m and n must be larger than zero. ");
+
+            SafeArrayPtr pa = matrix.mxCreateCellArray(2, new int[] { m, n });
+            CreateArray(pa, mxArrayType.Cell);
         }
 
         /// <summary>
         /// Create a cell array with one dimsension.
         /// </summary>
         /// <param name="count">The length of cell array.</param>
-        internal mxCellArray(int count)
-            : base(matrix.mxCreateCellArray(2, new int[] { 1, count }), mxArrayType.Cell) {
-            CheckActive();
+        public mxCellArray(int count) {
+            if (count < 1)
+                throw new ArgumentOutOfRangeException("The count must be larger than zero. ");
+            
+            SafeArrayPtr pa = matrix.mxCreateCellArray(2, new int[] { 1, count });
+            CreateArray(pa, mxArrayType.Cell);
         }
 
         /// <summary>
