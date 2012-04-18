@@ -316,8 +316,6 @@ namespace MatlabAPI.Matlab {
         public double ScalarValue { get { return matrix.mxGetScalar(this.NativeObject); } }
 
         public override string ToString() {
-            //Array array = this.ToArray();
-            //StringBuilder sb = new StringBuilder();
             return ScalarValue.ToString();
         }
 
