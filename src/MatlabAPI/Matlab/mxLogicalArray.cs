@@ -24,7 +24,6 @@ using System.Runtime.InteropServices;
 
 namespace MatlabAPI.Matlab {
     public class mxLogicalArray : mxArray {
-
         #region Constructors
 
         internal mxLogicalArray(SafeArrayPtr pa) : base(pa, mxArrayType.Logical) { }
