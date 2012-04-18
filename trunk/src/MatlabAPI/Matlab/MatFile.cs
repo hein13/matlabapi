@@ -28,8 +28,8 @@ namespace MatlabAPI.Matlab {
         /// <returns>return matfile object.</returns>
         public static MatFile Open(string fileName, string mode) {
             // check mode
-            if (!File.Exists(fileName))
-                throw new FileNotFoundException("The mat file is not found!", fileName);
+            //if (!File.Exists(fileName))
+            //    throw new FileNotFoundException("The mat file is not found!", fileName);
 
             SafeMATFilePtr pa = mat.matOpen(fileName, mode);
             if (pa.IsInvalid)
