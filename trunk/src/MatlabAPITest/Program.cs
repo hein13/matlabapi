@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using MatlabAPI;
 using MatlabAPI.Matlab;
@@ -8,11 +7,6 @@ using MatlabAPI.Matlab;
 namespace MatlabAPITest {
     class Program {
         static void Main(string[] args) {
-            System.IO.MemoryMappedFiles.MemoryMappedFile mmf = System.IO.MemoryMappedFiles.MemoryMappedFile.CreateOrOpen("", 1024 * 1024 * 1024 * 2,
-                 System.IO.MemoryMappedFiles.MemoryMappedFileAccess.Read,
-                  System.IO.MemoryMappedFiles.MemoryMappedFileOptions.DelayAllocatePages,
-                 new System.IO.MemoryMappedFiles.MemoryMappedFileSecurity(), System.IO.HandleInheritability.None);
-
             
             //string filename = @"E:\Program Files\MATLAB\R2009b\toolbox\gildata\cache.mat";
             //using (MatFile matFile = MatFile.Open(filename, "r")) {
