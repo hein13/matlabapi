@@ -20,9 +20,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MatlabAPI.Matlab {
     public sealed class mxCellArray : mxArray {
