@@ -20,6 +20,8 @@ namespace MatlabAPITest {
             //    //succ = matFile.DeleteVariable("a");
             //    //variableNames = matFile.GetVariableNames();
             //}
+            MLApp.MLAppClass app = new MLApp.MLAppClass();
+            
             using (MatEngine engine = new MatEngine(true)) {
                 engine.Start();
                 //mxLogicalArray bl = new mxLogicalArray(10, 10);
