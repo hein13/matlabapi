@@ -48,9 +48,9 @@ namespace MatlabAPI {
 
         public bool IsValid { get { return _engine.IsInvalid; } }
 
-        public void Start() {
-            int r = engine.engEvalString(this._engine, "start;");
-        }
+        //public void Start() {
+        //    int r = engine.engEvalString(this._engine, "start;");
+        //}
 
         public bool Visible {
             get {
@@ -72,7 +72,6 @@ namespace MatlabAPI {
         public mxArray GetVariable(string variableName) {
             return mxArray.Create(engine.engGetVariable(this._engine, variableName));
         }
-
 
         public void Close() { Dispose(); }
 
