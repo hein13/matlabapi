@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Matlab API for CSharp, include matlab engine api, matrix api and mat file api.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("MatlabAPI.dll")]
-[assembly: AssemblyCopyright("Copyright ©  2012 Jeff<guangboo49@gmail.com>")]
+[assembly: AssemblyCopyright("Copyright © 2012 <guangboo49@gmail.com>")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,4 +31,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.1.*")]
